@@ -1,8 +1,8 @@
 package com.linyk3.bean;
 
 public class BusReq {
-	ReqHeader head = new ReqHeader();
-	ReqBody body = new ReqBody();
+	private ReqHeader head = new ReqHeader();
+	private ReqBody body = new ReqBody();
 	public ReqHeader getHead() {
 		return head;
 	}

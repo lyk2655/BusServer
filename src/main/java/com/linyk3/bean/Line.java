@@ -1,6 +1,6 @@
 package com.linyk3.bean;
 
-public class BUS_LINE {
+public class Line {
 	private String line_id;
 	private String line_stanum;
 	private String line_staname;
@@ -74,5 +74,7 @@ public class BUS_LINE {
 				+ line_uptime + ", line_downtime=" + line_downtime + ", line_chgdt=" + line_chgdt + ", line_chgtm="
 				+ line_chgtm + "]";
 	}
+	
+	
 	
 }

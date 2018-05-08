@@ -1,6 +1,7 @@
 package com.linyk3.bean;
 
-public class BUS_BUS {
+
+public class Bus {
 	private String bus_id;
 	private String bus_num;
 	private String bus_line;
@@ -23,11 +24,11 @@ public class BUS_BUS {
 	private String bus_chgdt;
 	private String bus_chgtm;
 	
-	public BUS_BUS() {
+	public Bus() {
 		
 	}
 	
-	public BUS_BUS(BUS_BUS bus) {
+	public Bus(Bus bus) {
 		this.bus_id=bus.bus_id;
 		this.bus_num=bus.bus_num;
 		this.bus_line=bus.bus_line;
@@ -188,6 +189,8 @@ public class BUS_BUS {
 				+ bus_nexttm + ", bus_nextdis=" + bus_nextdis + ", bus_chgdt=" + bus_chgdt + ", bus_chgtm=" + bus_chgtm
 				+ "]";
 	}
+	
+	
 	
 	
 	
