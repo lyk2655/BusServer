@@ -1,0 +1,82 @@
+01、BC0001-应用模式选择
+http://111.230.148.118:8080/BocbusServer/Mode.do?param={"head":{"TRACDE":"BC00001","TRADAT":"11111","TRATIM":"11111","USRNAM":"ling123"},"body":{"line":"1","mode":"P"}}
+
+02、BC0002-获取位置
+http://111.230.148.118:8080/BocbusServer/QueryLocation.do?param={"head":{"TRACDE":"BC00001","TRADAT":"11111","TRATIM":"11111","USRNAM":"1"},"body":{"line":"1","stanum":"3"}}
+
+03、BC0003-选择路线 --没必要
+
+
+04、BC0004-查看路线
+http://111.230.148.118:8080/BocbusServer/BusLine.do?param={"head":{"TRACDE":"BC00004","TRADAT":"11111","TRATIM":"11111","USRNAM":"ling123"},"body":{"line":"1"}}
+
+05、BC0005-上传位置
+http://111.230.148.118:8080/BocbusServer/UploadLocation.do?param={"head":{"TRACDE":"BC00005","TRADAT":"11111","TRATIM":"11111","USRNAM":"1"},"body":{"line":"1","toc":"1",longitude":"0","latitude":"0"}}
+
+http://111.230.148.118:8080/BocbusServer/UploadLocation.do?param={"head":{"TRACDE":"BC00005","TRADAT":"11111","TRATIM":"11111","USRNAM":"1"},"body":{"line":"1","toc":"1","longitude":"115.521028","latitude":"34.084643"}}
+
+http://111.230.148.118:8080/BocbusServer/UploadLocation.do?param={"head":{"TRACDE":"BC00005","TRADAT":"11111","TRATIM":"11111","USRNAM":"1"},"body":{"line":"1","toc":"1","longitude":"115.121028","latitude":"34.284643"}}
+
+http://111.230.148.118:8080/BocbusServer/UploadLocation.do?param={"head":{"TRACDE":"BC00005","TRADAT":"11111","TRATIM":"11111","USRNAM":"1"},"body":{"line":"1","toc":"1","longitude":"114.121028","latitude":"36.284643"}}
+
+06、BC0006-最近站点
+http://111.230.148.118:8080/BocbusServer/QueryClosestStation.do?param={"head":{"TRACDE":"BC00006","TRADAT":"11111","TRATIM":"11111","USRNAM":"1"},"body":{"line":"1","toc":"1","longitude":"114.121028","latitude":"36.284643"}}
+
+http://restapi.amap.com/v3/distance?key=8ad12a9140feb5b3ebdcd83abf021d45&origins=116.481028,39.989643|114.481028,39.989643|115.481028,39.989643&destination=114.465302,40.004717&type=1
+
+
+
+http://localhost:8080/mySpringMvc/Mode.do?param={"head":{"TRACDE":"BC00001","TRADAT":"11111","TRATIM":"11111","USRNAM":"ling123"},"body":{"line":"1","mode":"P"}}
+
+01、BC0001-应用模式选择
+http://localhost:8080/BocbusServer/Mode.do?param={"head":{"TRACDE":"BC00001","TRADAT":"11111","TRATIM":"11111","USRNAM":"ling123"},"body":{"line":"1","mode":"P"}}
+
+02、BC0002-获取位置
+http://localhost:8080/BocbusServer/QueryLocation.do?param={"head":{"TRACDE":"BC00001","TRADAT":"11111","TRATIM":"11111","USRNAM":"1"},"body":{"line":"1","stanum":"3"}}
+
+03、BC0003-选择路线 --没必要
+
+
+04、BC0004-查看路线
+http://localhost:8080/BocbusServer/BusLine.do?param={"head":{"TRACDE":"BC00004","TRADAT":"11111","TRATIM":"11111","USRNAM":"ling123"},"body":{"line":"1"}}
+
+05、BC0005-上传位置
+http://localhost:8080/BocbusServer/UploadLocation.do?param={"head":{"TRACDE":"BC00002","TRADAT":"11111","TRATIM":"11111","USRNAM":"1"},"body":{"line":"1","toc":"1","longitude":"115.521028","latitude":"34.084643"}}
+
+06、BC0006-最近站点
+http://localhost:8080/BocbusServer/QueryClosestStation.do?param={"head":{"TRACDE":"BC00006","TRADAT":"11111","TRATIM":"11111","USRNAM":"1"},"body":{"line":"1","toc":"1","longitude":"114.121028","latitude":"36.284643"}}
+
+
+
+
+
+
+
+
+ssh linyk3@47.106.81.77   
+ssh root@111.230.148.118   
+pass001!
+
+scp sourcefile  root@111.230.148.118:/root
+
+解压：tar zxvf FileName.tar.gz
+压缩：tar zcvf FileName.tar.gz DirName
+
+修改数据库：
+vi /root/apache-tomcat-8.5.28/webapps/BocbusServer/WEB-INF/classes/sqlMapConfig.xml
+vi /root/apache-tomcat-8.5.28/webapps/BocbusServer/WEB-INF/service.xml
+
+tail -f /root/apache-tomcat-8.5.28/logs/catalina.out
+./root/apache-tomcat-8.5.28/bin/shutdown.sh
+./root/apache-tomcat-8.5.28/bin/startup.sh
+
+查看端口哪个进程占用：lsof -i:8080
+查看端口： netstat -an | grep 8080
+
+
+grant all privileges on bocbus.* to bocbus@localhost identified by "bocbus";
+
+=CONCATENATE("insert into `bus_line` values('5','",A2,"','",D2,"','",B2,"','",C2,"','072300','181000','20180208','072500');")
+
+
+
