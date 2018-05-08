@@ -1,41 +1,32 @@
 package com.linyk3.action;
 
-import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.linyk3.bean.User;
-import com.linyk3.service.UserService;
+import com.linyk3.service.UserServiceImpl;
 
 
 @Controller
 public class LoginController {
+	
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
-    @RequestMapping(value = "/index.html")
+    @RequestMapping("/")
     public String loginPage() {
-        return "login";
+        return "index";
     }
     
-    @RequestMapping(value = "/loginCheck.html")
-    public ModelAndView loginCheck(HttpServletRequest request, LoginCommand loginCommand){
-        boolean isVaildUser = userService.hasMatchUser(loginCommand.getUsername(), loginCommand.getPassword());
-        if(!isVaildUser){
-            return new ModelAndView("login", "error", "用户名或密码错误");
-        }else{
-            User user = userService.findUserByUsername(loginCommand.getUsername());
-            user.setLastIp(request.getLocalAddr());
-            user.setLastVisit(new Date());
-            System.out.println("loginCheck"+user);
-            userService.loginSuccess(user);
-            request.getSession().setAttribute("user", user);
-            return new ModelAndView("main");
-        }
+    
+    @RequestMapping(value = "/test")
+    public String testMybatis(HttpServletRequest request) {
+    	User user = userService.getUserByUsername("linyk3");
+    	System.out.println(user);
+    	request.getSession().setAttribute("data", user);
+        return "json";
     }
 }

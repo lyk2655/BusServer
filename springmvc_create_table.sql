@@ -1,11 +1,11 @@
 CREATE TABLE `t_user` (
-  `user_id`          int(11) NOT NULL auto_increment,
-  `user_name`        varchar(30) DEFAULT NULL,
+  `userId`          int(11) NOT NULL auto_increment,
+  `userName`        varchar(30) DEFAULT NULL,
   `credits`          int(11) DEFAULT NULL,
   `password`         varchar(32) DEFAULT NULL,
-  `last_visit`       datetime DEFAULT NULL,
-  `last_ip`          varchar(23) DEFAULT NULL, 
-  PRIMARY KEY (`user_id`)
+  `lastVisit`       datetime DEFAULT NULL,
+  `lastIp`          varchar(23) DEFAULT NULL, 
+  PRIMARY KEY (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 insert into `t_user` values('001','linyk3','444444444','111111','20180411','22.11.11.00');
