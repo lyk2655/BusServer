@@ -18,11 +18,11 @@ import com.linyk3.bean.GAPI_DISTANCE_PARAMETERS;
 import com.linyk3.bean.Line;
 import com.linyk3.bean.QueryBusRes;
 import com.linyk3.bean.QueryBusResBody;
+import com.linyk3.bean.QueryClosestStationRes;
 import com.linyk3.bean.QueryLineRes;
 import com.linyk3.bean.QueryLineResBody;
 import com.linyk3.bean.ResHeader;
 import com.linyk3.service.BusService;
-import com.linyk3.service.UserServiceImpl;
 import com.linyk3.util.GapiUtil;
 
 @Controller
@@ -30,7 +30,11 @@ public class BusController {
 	Logger logger = Logger.getLogger(BusController.class); 
     @Autowired 
     private BusService busService;
-    
+    /**
+     * 查询路线站点信息
+     * @param line
+     * @return List<Line>
+     */
     @RequestMapping(value = "/BusLine.do")
     public String queryLine(HttpServletRequest request) {
     	String param = request.getParameter("param");
@@ -68,6 +72,11 @@ public class BusController {
         return "json";
     }
     
+    /**
+     * 查询班车位置，以及到站点的预计时间距离
+     * @param line， station number
+     * @return bus，station number，distance，time
+     */
     @RequestMapping(value = "/QueryLocation.do")
     public String queryBus(HttpServletRequest request) {
     	String param = request.getParameter("param");
@@ -133,6 +142,48 @@ public class BusController {
 		res.setHead(head);	
 		res.setBody(body);
 		logger.info(res);
+		request.getSession().setAttribute("data",JSON.toJSONString(res));
+        return "json";
+    }
+    /**
+     * 查询最近站点信息
+     * @param line，longitude，latitude
+     * @return Line
+     */
+    @RequestMapping(value = "/QueryClosestStation.do")
+    public String queryClosestStation(HttpServletRequest request) {
+    	String param = request.getParameter("param");
+    	logger.info(param);
+    	BusReq req = JSONObject.parseObject(param, BusReq.class);
+    	logger.info(req.getBody());
+    	QueryClosestStationRes res = new QueryClosestStationRes();
+    	ResHeader head = new ResHeader();
+    	if(req == null || req.getBody() == null  || req.getBody().getLine() == null 
+    			|| req.getBody().getLongitude() == null || req.getBody().getLatitude() == null) {
+    		head.setRTNSTS("EEEE");
+    		head.setERRMSG("参数错误");
+    		res.setHead(head);
+    		request.getSession().setAttribute("data",JSON.toJSONString(res));
+            return "json";
+    	}
+    	String line = req.getBody().getLine();
+    	String longitude = req.getBody().getLongitude();
+    	String latitude = req.getBody().getLatitude();
+    	
+    	Line station = busService.queryCloestStation(line,longitude,latitude);
+		logger.info(station);
+    	if(station == null)
+    	{
+    		head.setRTNSTS("EEEE");
+    		head.setERRMSG("查询错误");
+    		res.setHead(head);
+    		request.getSession().setAttribute("data",JSON.toJSONString(res));
+            return "json";
+    	}
+    	head.setRTNSTS("0000");
+		head.setERRMSG("查询线路成功");
+		res.setHead(head);
+		res.setBody(station);
 		request.getSession().setAttribute("data",JSON.toJSONString(res));
         return "json";
     }
