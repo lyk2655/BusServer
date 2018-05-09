@@ -1,5 +1,8 @@
 package com.linyk3.bean;
 
+import com.alibaba.fastjson.annotation.JSONType;
+
+@JSONType(orders={"bus_id","bus_num","bus_line","bus_driver","bus_tell","bus_longitude1","bus_latitude1","bus_longitude2","bus_latitude2","bus_longitude3","bus_latitude3","bus_uploadid","bus_uploaddt","bus_uploadtm","bus_laststa","bus_lasttm","bus_nextsta","bus_nexttm","bus_nextdis","bus_chgdt","bus_chgtm","stanum","stadis","statime"})
 public class QueryBusResBody {
 	private String bus_id;
 	private String bus_num;

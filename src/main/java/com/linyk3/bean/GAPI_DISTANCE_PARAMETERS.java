@@ -21,6 +21,14 @@ public class GAPI_DISTANCE_PARAMETERS {
 		this.destination = des;
 	}
 	
+	public GAPI_DISTANCE_PARAMETERS(String ori, String des,String type) {
+		this.key = "8ad12a9140feb5b3ebdcd83abf021d45";
+		this.type = type;
+		this.output = "json";
+		this.origins = ori;
+		this.destination = des;
+	}
+	
 	public String getKey() {
 		return key;
 	}

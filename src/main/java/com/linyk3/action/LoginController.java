@@ -13,6 +13,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.linyk3.bean.Bus;
 import com.linyk3.bean.BusReq;
+import com.linyk3.bean.GAPI_DISTANCE;
+import com.linyk3.bean.GAPI_DISTANCE_PARAMETERS;
 import com.linyk3.bean.Line;
 import com.linyk3.bean.QueryBusRes;
 import com.linyk3.bean.QueryBusResBody;
@@ -22,6 +24,7 @@ import com.linyk3.bean.ResHeader;
 import com.linyk3.bean.User;
 import com.linyk3.service.BusService;
 import com.linyk3.service.UserServiceImpl;
+import com.linyk3.util.GapiUtil;
 
 
 @Controller
@@ -112,6 +115,7 @@ public class LoginController {
     		request.getSession().setAttribute("data",JSON.toJSONString(res));
             return "json";
     	}
+    	body.setBus(bus);
     	
     	//班车位置到站点stanum的距离时间
     	Line station = busService.queryLineByLineAndStanum(line, stanum);
@@ -124,12 +128,29 @@ public class LoginController {
             return "json";
     	}
     	
-    	
-    
+    	StringBuffer ori = new StringBuffer();
+		StringBuffer des = new StringBuffer();
+		ori.append(bus.getBus_longitude3()).append(",").append(bus.getBus_latitude3());
+		des.append(station.getLine_longitude()).append(",").append(station.getLine_latitude());
+		GAPI_DISTANCE_PARAMETERS pa = new GAPI_DISTANCE_PARAMETERS(ori.toString(),des.toString(),"1");
+		GAPI_DISTANCE dis = GapiUtil.getDistance(pa);
+		logger.info(dis);
+		if(dis == null || dis.getResults() == null || dis.getResults().isEmpty() 
+				|| dis.getResults().get(0).getDistance() == null || dis.getResults().get(0).getDuration() == null)
+		{
+			body.setStanum(stanum);
+			body.setStadis("0");
+			body.setStatime("0");
+		}else {
+			body.setStanum(stanum);
+			body.setStadis(dis.getResults().get(0).getDistance());
+			body.setStatime(dis.getResults().get(0).getDuration());
+		}
     	head.setRTNSTS("0000");
 		head.setERRMSG("查询位置成功");
 		res.setHead(head);	
 		res.setBody(body);
+		logger.info(res);
 		request.getSession().setAttribute("data",JSON.toJSONString(res));
         return "json";
     }
