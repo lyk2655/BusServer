@@ -52,8 +52,8 @@ public class LoginController {
     	if(req == null || req.getBody() == null || req.getBody().getLine() == null) {
     		head.setRTNSTS("EEEE");
     		head.setERRMSG("参数错误");
-    		res.setHead(head);	
-    		request.getSession().setAttribute("data",res);
+    		res.setHead(head);
+    		request.getSession().setAttribute("data",JSON.toJSONString(res));
             return "json";
     	}
     	String line = req.getBody().getLine();
@@ -61,7 +61,11 @@ public class LoginController {
     	
     	if(body == null || body.getStationList() == null || body.getStationList().isEmpty())
     	{
-    		
+    		head.setRTNSTS("EEEE");
+    		head.setERRMSG("参数line错误");
+    		res.setHead(head);
+    		request.getSession().setAttribute("data",JSON.toJSONString(res));
+            return "json";
     	}
     	head.setRTNSTS("0000");
 		head.setERRMSG("查询线路成功");
