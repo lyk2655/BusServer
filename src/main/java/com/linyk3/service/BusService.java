@@ -6,8 +6,10 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.linyk3.bean.Bus;
 import com.linyk3.bean.Line;
 import com.linyk3.bean.QueryLineResBody;
+import com.linyk3.mapper.BusMapper;
 import com.linyk3.mapper.LineMapper;
 
 @Service("busService")
@@ -16,6 +18,9 @@ public class BusService {
 	
 	@Autowired
     private LineMapper lineMapper;
+	
+	@Autowired 
+	private BusMapper busMapper;
     
 	public QueryLineResBody queryLine(String line) {
 		List<Line> lineList = lineMapper.queryLine(line);
@@ -23,6 +28,12 @@ public class BusService {
 		logger.info(lineList);
 		body.setStationList(lineList);
 		return body;
+	}
+
+	public Bus queryBus(String line) {
+		// TODO Auto-generated method stub
+		Bus bus = busMapper.queryBus(line);
+		return bus;
 	}
 
 }

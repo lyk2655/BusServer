@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.linyk3.bean.Bus;
 import com.linyk3.bean.BusReq;
+import com.linyk3.bean.QueryBusRes;
+import com.linyk3.bean.QueryBusResBody;
 import com.linyk3.bean.QueryLineRes;
 import com.linyk3.bean.QueryLineResBody;
 import com.linyk3.bean.ResHeader;
@@ -69,6 +72,44 @@ public class LoginController {
     	}
     	head.setRTNSTS("0000");
 		head.setERRMSG("查询线路成功");
+		res.setHead(head);	
+		res.setBody(body);
+		request.getSession().setAttribute("data",JSON.toJSONString(res));
+        return "json";
+    }
+    
+    @RequestMapping(value = "/QueryLocation.do")
+    public String queryBus(HttpServletRequest request) {
+    	String param = request.getParameter("param");
+    	logger.info(param);
+    	BusReq req = JSONObject.parseObject(param, BusReq.class);
+    	logger.info(req.getBody());
+    	QueryBusRes res = new QueryBusRes();
+    	ResHeader head = new ResHeader();
+    	QueryBusResBody body = new QueryBusResBody();
+    	if(req == null || req.getBody() == null || req.getBody().getLine() == null
+    			|| req.getBody().getStanum() == null) {
+    		head.setRTNSTS("EEEE");
+    		head.setERRMSG("参数错误");
+    		res.setHead(head);
+    		request.getSession().setAttribute("data",JSON.toJSONString(res));
+            return "json";
+    	}
+    	String line = req.getBody().getLine();
+    	String stanum = req.getBody().getStanum();
+
+    	Bus bus = busService.queryBus(line);
+    	if(bus == null) {
+    		head.setRTNSTS("EEEE");
+    		head.setERRMSG("参数line错误");
+    		res.setHead(head);
+    		request.getSession().setAttribute("data",JSON.toJSONString(res));
+            return "json";
+    	}
+    	
+    	logger.info(bus);
+    	head.setRTNSTS("0000");
+		head.setERRMSG("查询位置成功");
 		res.setHead(head);	
 		res.setBody(body);
 		request.getSession().setAttribute("data",JSON.toJSONString(res));
