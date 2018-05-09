@@ -21,7 +21,7 @@ public class BusService {
 		List<Line> lineList = lineMapper.queryLine(line);
 		QueryLineResBody body = new QueryLineResBody();
 		logger.info(lineList);
-		body.setLineList(lineList);
+		body.setStationList(lineList);
 		return body;
 	}
 

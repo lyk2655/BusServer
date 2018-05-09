@@ -3,20 +3,22 @@ package com.linyk3.bean;
 import java.util.List;
 
 public class QueryLineResBody {
-	private List<Line> LineList;
+	private List<Line> stationList;
 
-	public List<Line> getLineList() {
-		return LineList;
+	public List<Line> getStationList() {
+		return stationList;
 	}
 
-	public void setLineList(List<Line> lineList) {
-		LineList = lineList;
+	public void setStationList(List<Line> stationList) {
+		this.stationList = stationList;
 	}
 
 	@Override
 	public String toString() {
-		return "QueryLineResBody [LineList=" + LineList + "]";
+		return "QueryLineResBody [stationList=" + stationList + "]";
 	}
+
+	
 	
 
 	

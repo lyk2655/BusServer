@@ -2,25 +2,20 @@ package com.linyk3.bean;
 
 
 public class ResHeader {
-	private String RTNSTS; 
-	private String ERRMSG;
-	
-	public String getRTNSTS() {
-		return RTNSTS;
-	}
-	public void setRTNSTS(String rTNSTS) {
-		RTNSTS = rTNSTS;
-	}
-	public String getERRMSG() {
-		return ERRMSG;
-	}
-	public void setERRMSG(String eRRMSG) {
-		ERRMSG = eRRMSG;
+	public String RTNSTS;
+	public String ERRMSG;
+
+	public void setRTNSTS(String RTNSTS) {
+		this.RTNSTS = RTNSTS;
 	}
 
-	public void setHeader(String rTNSTS,String eRRMSG) {
-		RTNSTS = rTNSTS;
-		ERRMSG=eRRMSG;
+	public void setERRMSG(String ERRMSG) {
+		this.ERRMSG = ERRMSG;
+	}
+	
+	public void setHeader(String RTNSTS,String ERRMSG) {
+		this.RTNSTS = RTNSTS;
+		this.ERRMSG = ERRMSG;
 	}
 	@Override
 	public String toString() {

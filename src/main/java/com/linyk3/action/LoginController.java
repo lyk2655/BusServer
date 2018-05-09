@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.linyk3.bean.BusReq;
 import com.linyk3.bean.QueryLineRes;
@@ -49,7 +50,8 @@ public class LoginController {
     	ResHeader head = new ResHeader();
     	QueryLineResBody body = new QueryLineResBody();
     	if(req == null || req.getBody() == null || req.getBody().getLine() == null) {
-    		head.setHeader("EEEE", "参数错误");
+    		head.setRTNSTS("EEEE");
+    		head.setERRMSG("参数错误");
     		res.setHead(head);	
     		request.getSession().setAttribute("data",res);
             return "json";
@@ -57,14 +59,17 @@ public class LoginController {
     	String line = req.getBody().getLine();
     	body = busService.queryLine(line);
     	
-    	if(body == null || body.getLineList() == null || body.getLineList().isEmpty())
+    	if(body == null || body.getStationList() == null || body.getStationList().isEmpty())
     	{
     		
     	}
-    	head.setHeader("0000", "查询线路成功");
-		res.setHead(head);
+    	head.setRTNSTS("0000");
+		head.setERRMSG("查询线路成功");
+		res.setHead(head);	
 		res.setBody(body);
-		request.getSession().setAttribute("data",res);
+		logger.info(head);
+		logger.info(JSON.toJSON(head));
+		request.getSession().setAttribute("data",JSON.toJSON(res).toString());
         return "json";
     }
     
