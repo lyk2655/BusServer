@@ -1,5 +1,8 @@
 package com.linyk3.bean;
 
+import com.alibaba.fastjson.annotation.JSONType;
+
+@JSONType(orders={"line_id","line_stanum","line_staname","line_longitude","line_latitude","line_uptime","line_downtime","line_chgdt","line_chgtm"})
 public class Line {
 	private String line_id;
 	private String line_stanum;

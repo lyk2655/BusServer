@@ -1,5 +1,8 @@
 package com.linyk3.bean;
 
+import com.alibaba.fastjson.annotation.JSONType;
+
+@JSONType(orders={"head","body"})
 public class QueryLineRes {
 	private ResHeader head;
 	private QueryLineResBody body;

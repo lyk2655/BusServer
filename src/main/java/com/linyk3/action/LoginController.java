@@ -67,9 +67,7 @@ public class LoginController {
 		head.setERRMSG("查询线路成功");
 		res.setHead(head);	
 		res.setBody(body);
-		logger.info(head);
-		logger.info(JSON.toJSON(head));
-		request.getSession().setAttribute("data",JSON.toJSON(res).toString());
+		request.getSession().setAttribute("data",JSON.toJSONString(res));
         return "json";
     }
     
