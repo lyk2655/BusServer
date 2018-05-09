@@ -22,12 +22,14 @@ public class BusService {
 	@Autowired 
 	private BusMapper busMapper;
     
-	public QueryLineResBody queryLine(String line) {
-		List<Line> lineList = lineMapper.queryLine(line);
-		QueryLineResBody body = new QueryLineResBody();
-		logger.info(lineList);
-		body.setStationList(lineList);
-		return body;
+	public List<Line> queryLineByLine(String line) {
+		List<Line> stationList = lineMapper.queryLineByLine(line);
+		return stationList;
+	}
+	
+	public Line queryLineByLineAndStanum(String line, String stanum) {
+		Line station = lineMapper.queryLineByLineAndStanum(line,stanum);
+		return station;
 	}
 
 	public Bus queryBus(String line) {

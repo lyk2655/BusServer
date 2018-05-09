@@ -8,5 +8,7 @@ import com.linyk3.bean.Line;
 
 @Repository("lineMapper")
 public interface LineMapper {
-	public List<Line> queryLine(String line);
+	public Line queryLineByLineAndStanum(String line, String stanum);
+
+	public List<Line> queryLineByLine(String line);
 }

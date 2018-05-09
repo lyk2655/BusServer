@@ -1,5 +1,7 @@
 package com.linyk3.action;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
@@ -11,6 +13,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.linyk3.bean.Bus;
 import com.linyk3.bean.BusReq;
+import com.linyk3.bean.Line;
 import com.linyk3.bean.QueryBusRes;
 import com.linyk3.bean.QueryBusResBody;
 import com.linyk3.bean.QueryLineRes;
@@ -60,9 +63,9 @@ public class LoginController {
             return "json";
     	}
     	String line = req.getBody().getLine();
-    	body = busService.queryLine(line);
-    	
-    	if(body == null || body.getStationList() == null || body.getStationList().isEmpty())
+    	List<Line> stationList = busService.queryLineByLine(line);
+		logger.info(stationList);
+    	if(stationList == null || stationList.isEmpty())
     	{
     		head.setRTNSTS("EEEE");
     		head.setERRMSG("参数line错误");
@@ -70,6 +73,8 @@ public class LoginController {
     		request.getSession().setAttribute("data",JSON.toJSONString(res));
             return "json";
     	}
+    	body.setStationList(stationList);
+    	
     	head.setRTNSTS("0000");
 		head.setERRMSG("查询线路成功");
 		res.setHead(head);	
@@ -99,6 +104,7 @@ public class LoginController {
     	String stanum = req.getBody().getStanum();
 
     	Bus bus = busService.queryBus(line);
+    	logger.info(bus);
     	if(bus == null) {
     		head.setRTNSTS("EEEE");
     		head.setERRMSG("参数line错误");
@@ -107,7 +113,19 @@ public class LoginController {
             return "json";
     	}
     	
-    	logger.info(bus);
+    	//班车位置到站点stanum的距离时间
+    	Line station = busService.queryLineByLineAndStanum(line, stanum);
+    	logger.info(station);
+    	if(station == null) {
+    		head.setRTNSTS("EEEE");
+    		head.setERRMSG("参数stanum错误");
+    		res.setHead(head);
+    		request.getSession().setAttribute("data",JSON.toJSONString(res));
+            return "json";
+    	}
+    	
+    	
+    
     	head.setRTNSTS("0000");
 		head.setERRMSG("查询位置成功");
 		res.setHead(head);	
