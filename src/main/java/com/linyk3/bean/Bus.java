@@ -1,7 +1,8 @@
 package com.linyk3.bean;
 
+import java.io.Serializable;
 
-public class Bus {
+public class Bus implements Serializable{
 	private String bus_id;
 	private String bus_num;
 	private String bus_line;
