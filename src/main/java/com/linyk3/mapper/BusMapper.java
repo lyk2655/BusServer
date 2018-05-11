@@ -9,4 +9,6 @@ public interface BusMapper {
 
 	public Bus queryBus(String line);
 
+	public void updateBus(Bus bustmp);
+
 }

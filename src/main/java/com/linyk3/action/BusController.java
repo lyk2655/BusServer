@@ -22,6 +22,7 @@ import com.linyk3.bean.QueryClosestStationRes;
 import com.linyk3.bean.QueryLineRes;
 import com.linyk3.bean.QueryLineResBody;
 import com.linyk3.bean.ResHeader;
+import com.linyk3.bean.UploadLocationRes;
 import com.linyk3.service.BusService;
 import com.linyk3.util.GapiUtil;
 
@@ -184,6 +185,45 @@ public class BusController {
 		head.setERRMSG("查询线路成功");
 		res.setHead(head);
 		res.setBody(station);
+		request.getSession().setAttribute("data",JSON.toJSONString(res));
+        return "json";
+    }
+    /**
+     * 更新班车位置
+     * @param line，longitude，latitude
+     * @return Line
+     */
+    @RequestMapping(value = "/UploadLocation.do")
+    public String UploadLocation(HttpServletRequest request) {
+    	String param = request.getParameter("param");
+    	logger.info(param);
+    	BusReq req = JSONObject.parseObject(param, BusReq.class);
+    	logger.info(req.getBody());
+    	UploadLocationRes res = new UploadLocationRes();
+    	ResHeader head = new ResHeader();
+    	if(req == null || req.getBody() == null  || req.getBody().getLine() == null 
+    			|| req.getBody().getLongitude() == null || req.getBody().getLatitude() == null) {
+    		head.setRTNSTS("EEEE");
+    		head.setERRMSG("参数错误");
+    		res.setHead(head);
+    		request.getSession().setAttribute("data",JSON.toJSONString(res));
+            return "json";
+    	}
+    	String line = req.getBody().getLine();
+    	String longitude = req.getBody().getLongitude();
+    	String latitude = req.getBody().getLatitude();
+    	
+    	res = busService.UploadLocation(line,longitude,latitude);
+		logger.info(res);
+    	if(res == null)
+    	{
+    		res = new UploadLocationRes();
+    		head.setRTNSTS("EEEE");
+    		head.setERRMSG("查询错误");
+    		res.setHead(head);
+    		request.getSession().setAttribute("data",JSON.toJSONString(res));
+            return "json";
+    	}
 		request.getSession().setAttribute("data",JSON.toJSONString(res));
         return "json";
     }

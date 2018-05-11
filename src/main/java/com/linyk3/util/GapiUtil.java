@@ -29,7 +29,7 @@ public class GapiUtil {
 		//Glogger.info(distance);
 		return distance;
 	}
-
+	
 	public static GAPI_DISTANCE_RESULT getMinDistance(GAPI_DISTANCE distances) {
 		// 查询不成功，返回-1
 		if (distances.getResults() == null || distances.getResults().isEmpty() || distances.getStatus().equals("0")) {
@@ -49,7 +49,27 @@ public class GapiUtil {
         //System.out.println("min\n"+min.toString());
         return candidate;
 	}
-	// 距离测量 1-n
+	
+	//获取到两点的距离
+	public static GAPI_DISTANCE_RESULT getStationDistance(String ori, String des, String type) {
+		GAPI_DISTANCE_PARAMETERS pa1 = new GAPI_DISTANCE_PARAMETERS(ori,des,type);
+		GAPI_DISTANCE_PARAMETERS pa2 = new GAPI_DISTANCE_PARAMETERS(des,ori,type);
+		GAPI_DISTANCE dis1  = GapiUtil.getDistance(pa1);
+		if(dis1 == null || dis1.getResults() == null || dis1.getResults().isEmpty()) {
+			return null;
+		}
+
+		GAPI_DISTANCE dis2  = GapiUtil.getDistance(pa2);
+		if(dis2 == null || dis2.getResults() == null || dis2.getResults().isEmpty()) {
+			return null;
+		}
+		
+		if(dis1.getResults().get(0).getDistance().compareTo(dis2.getResults().get(0).getDistance()) < 0) {
+			return dis1.getResults().get(0);
+		}else {
+			return dis2.getResults().get(0);
+		}
+	}
 
 	public static void main(String[] args) {
 		GAPI_DISTANCE_PARAMETERS pa = new GAPI_DISTANCE_PARAMETERS(

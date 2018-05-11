@@ -5,6 +5,15 @@ public class ResHeader {
 	public String RTNSTS;
 	public String ERRMSG;
 
+	public ResHeader()
+	{
+		
+	}
+	public ResHeader(String RTNSTS, String ERRMSG) {
+		this.ERRMSG = ERRMSG;
+		this.RTNSTS = RTNSTS;
+	}
+
 	public void setRTNSTS(String RTNSTS) {
 		this.RTNSTS = RTNSTS;
 	}

@@ -5,5 +5,30 @@
     <select id="queryBus" parameterType="java.lang.String" resultType="Bus">
         select * from bus_bus where bus_id=#{line}
     </select>
+    
+    <update id="updateBus" parameterType="Bus" >
+        update bus_bus set 
+			bus_num = #{bus_num},
+			bus_line = #{bus_line},
+			bus_driver = #{bus_driver},
+			bus_tell = #{bus_tell},
+			bus_longitude1 = #{bus_longitude1},
+			bus_latitude1 = #{bus_latitude1},
+			bus_longitude2 = #{bus_longitude2},
+			bus_latitude2 = #{bus_latitude2},
+			bus_longitude3 = #{bus_longitude3},
+			bus_latitude3 = #{bus_latitude3},
+			bus_uploadid = #{bus_uploadid},
+			bus_uploaddt = #{bus_uploaddt},
+			bus_uploadtm = #{bus_uploadtm},
+			bus_laststa = #{bus_laststa},
+			bus_lasttm = #{bus_lasttm},
+			bus_nextsta = #{bus_nextsta},
+			bus_nexttm = #{bus_nexttm},
+			bus_nextdis = #{bus_nextdis},
+			bus_chgdt = #{bus_chgdt},
+			bus_chgtm = #{bus_chgtm}
+        where bus_id=#{bus_id}
+    </update>
 
 </mapper>
