@@ -192,9 +192,10 @@ public class BusController {
      * 更新班车位置
      * @param line，longitude，latitude
      * @return Line
+     * @throws Exception 
      */
     @RequestMapping(value = "/UploadLocation.do")
-    public String UploadLocation(HttpServletRequest request) {
+    public String UploadLocation(HttpServletRequest request) throws Exception {
     	String param = request.getParameter("param");
     	logger.info(param);
     	BusReq req = JSONObject.parseObject(param, BusReq.class);
