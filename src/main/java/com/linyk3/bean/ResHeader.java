@@ -26,6 +26,13 @@ public class ResHeader {
 		this.RTNSTS = RTNSTS;
 		this.ERRMSG = ERRMSG;
 	}
+	
+	public String getRTNSTS() {
+		return RTNSTS;
+	}
+	public String getERRMSG() {
+		return ERRMSG;
+	}
 	@Override
 	public String toString() {
 		return "ResHeader [RTNSTS=" + RTNSTS + ", ERRMSG=" + ERRMSG + "]";

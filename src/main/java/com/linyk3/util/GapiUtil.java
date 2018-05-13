@@ -63,8 +63,9 @@ public class GapiUtil {
 		if(dis2 == null || dis2.getResults() == null || dis2.getResults().isEmpty()) {
 			return null;
 		}
-		
-		if(dis1.getResults().get(0).getDistance().compareTo(dis2.getResults().get(0).getDistance()) < 0) {
+		int ln1 = Integer.parseInt(dis1.getResults().get(0).getDistance());
+		int ln2 = Integer.parseInt(dis2.getResults().get(0).getDistance());
+		if(ln1 < ln2) {
 			return dis1.getResults().get(0);
 		}else {
 			return dis2.getResults().get(0);

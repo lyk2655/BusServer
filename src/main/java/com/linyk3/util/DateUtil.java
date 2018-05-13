@@ -44,12 +44,12 @@ public class DateUtil {
 			return true;
 		}
 		SimpleDateFormat simpleFormat = new SimpleDateFormat("HHmmssSSSSS");
-		System.out.println(date+time);
-		System.out.println(dt+tm);
+		//System.out.println(date+time);
+		//System.out.println(dt+tm);
 		long tml = simpleFormat.parse(tm).getTime();
 		long timel = simpleFormat.parse(time).getTime();
 		long d = (tml - timel)/1000;
-		System.out.println("tm:"+tml+"-time"+timel+"="+d);
+		//System.out.println("tm:"+tml+"-time"+timel+"="+d);
 		
 		if(d >= 0 && d < this.sec)
 		{

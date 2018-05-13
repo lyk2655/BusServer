@@ -98,7 +98,7 @@ public class BusService {
 		GAPI_DISTANCE_PARAMETERS pa = new GAPI_DISTANCE_PARAMETERS(origin.toString(), des.toString(),type);
 		GAPI_DISTANCE dis = GapiUtil.getDistance(pa);
 		GAPI_DISTANCE_RESULT min = GapiUtil.getMinDistance(dis);
-		logger.info(dis);
+		//logger.info(dis);
 		int minid = Integer.parseInt(min.getOrigin_id());
 		if(minid < 1 || minid > stationList.size()) {
 			return null;
@@ -236,18 +236,18 @@ public class BusService {
 					tmpbus.setBus_longitude2(bus.getBus_longitude3());
 					tmpbus.setBus_latitude3(latitude);
 					tmpbus.setBus_longitude3(longitude);
+					tmpbus.setBus_laststa(staMinNew.getLine_stanum());
 					if(stanumNew < stationList.size()) {
-						tmpbus.setBus_laststa(String.valueOf(stanumNew+1));
+						tmpbus.setBus_nextsta(String.valueOf(stanumNew+1));
 					}else {
-						tmpbus.setBus_laststa(staMinNew.getLine_stanum());
+						tmpbus.setBus_nextsta(staMinNew.getLine_stanum());
 					}
-					tmpbus.setBus_nextsta(staMinNew.getLine_stanum());
 					tmpbus.setBus_nexttm(resultNew.getDuration());
 					tmpbus.setBus_nextdis(resultNew.getDistance());
 					tmpbus.setBus_chgdt(date.getDt());
 					tmpbus.setBus_chgtm(date.getTm());
 					busMapper.updateBus(tmpbus);
-					res.setHead(new ResHeader("R0005","refresh:both staMin3 and staMinNew the last station!"));
+					res.setHead(new ResHeader("R0005","refresh:both staMin3 and staMinNew is the last station!"));
 					res.setBody(tmpbus);
 					return res;
 				}
