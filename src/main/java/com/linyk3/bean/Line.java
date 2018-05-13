@@ -3,7 +3,7 @@ package com.linyk3.bean;
 import com.alibaba.fastjson.annotation.JSONType;
 
 @JSONType(orders={"line_id","line_stanum","line_staname","line_longitude","line_latitude","line_uptime","line_downtime","line_chgdt","line_chgtm"})
-public class Line {
+public class Line implements Comparable<Line> {
 	private String line_id;
 	private String line_stanum;
 	private String line_staname;
@@ -76,6 +76,13 @@ public class Line {
 				+ ", line_longitude=" + line_longitude + ", line_latitude=" + line_latitude + ", line_uptime="
 				+ line_uptime + ", line_downtime=" + line_downtime + ", line_chgdt=" + line_chgdt + ", line_chgtm="
 				+ line_chgtm + "]";
+	}
+	@Override
+	public int compareTo(Line l) {
+		if(Integer.parseInt(this.getLine_stanum()) < Integer.parseInt(l.getLine_stanum())) {
+			return -1;
+		}
+		return 1;
 	}
 	
 	

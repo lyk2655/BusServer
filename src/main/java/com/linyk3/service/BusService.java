@@ -1,6 +1,7 @@
 package com.linyk3.service;
 
 import java.text.ParseException;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -24,20 +25,20 @@ import com.linyk3.util.GapiUtil;
 @Service("busService")
 public class BusService {
 	Logger logger = Logger.getLogger(BusService.class);
-	
+
 	@Autowired
-    private LineMapper lineMapper;
-	
-	@Autowired 
+	private LineMapper lineMapper;
+
+	@Autowired
 	private BusMapper busMapper;
-    
+
 	public List<Line> queryLineByLine(String line) {
 		List<Line> stationList = lineMapper.queryLineByLine(line);
 		return stationList;
 	}
-	
+
 	public Line queryLineByLineAndStanum(String line, String stanum) {
-		Line station = lineMapper.queryLineByLineAndStanum(line,stanum);
+		Line station = lineMapper.queryLineByLineAndStanum(line, stanum);
 		return station;
 	}
 
@@ -48,66 +49,65 @@ public class BusService {
 	}
 
 	public Line queryCloestStation(String line, String longitude, String latitude) {
-		//获取班车路线站点信息
+		// 获取班车路线站点信息
 		List<Line> stationList = lineMapper.queryLineByLine(line);
-		if(stationList == null || stationList.isEmpty()) {
+		if (stationList == null || stationList.isEmpty()) {
 			return null;
 		}
 		StringBuffer origin = new StringBuffer();
 		StringBuffer des = new StringBuffer();
 		Iterator<Line> iter = stationList.iterator();
 		Line station;
-		while(iter.hasNext()) {
+		while (iter.hasNext()) {
 			station = iter.next();
 			origin.append(station.getLine_longitude()).append(",").append(station.getLine_latitude());
-			if(iter.hasNext()) {
+			if (iter.hasNext()) {
 				origin.append("|");
 			}
 		}
 		des.append(longitude).append(",").append(latitude);
-		//查询直线距离
-		GAPI_DISTANCE_PARAMETERS pa = new GAPI_DISTANCE_PARAMETERS(origin.toString(), des.toString(),"0");
+		// 查询直线距离
+		GAPI_DISTANCE_PARAMETERS pa = new GAPI_DISTANCE_PARAMETERS(origin.toString(), des.toString(), "0");
 		GAPI_DISTANCE dis = GapiUtil.getDistance(pa);
 		GAPI_DISTANCE_RESULT min = GapiUtil.getMinDistance(dis);
 		logger.info(dis);
 		int minid = Integer.parseInt(min.getOrigin_id());
-		if(minid < 1 || minid > stationList.size()) {
+		if (minid < 1 || minid > stationList.size()) {
 			return null;
 		}
-		station = stationList.get(minid-1);
+		station = stationList.get(minid - 1);
 		return station;
 	}
-	
+
 	public Line queryCloestStation(List<Line> stationList, String longitude, String latitude, String type) {
-		//获取班车路线站点信息
-		if(stationList == null || stationList.isEmpty()) {
+		// 获取班车路线站点信息
+		if (stationList == null || stationList.isEmpty()) {
 			return null;
 		}
 		StringBuffer origin = new StringBuffer();
 		StringBuffer des = new StringBuffer();
 		Iterator<Line> iter = stationList.iterator();
 		Line station;
-		while(iter.hasNext()) {
+		while (iter.hasNext()) {
 			station = iter.next();
 			origin.append(station.getLine_longitude()).append(",").append(station.getLine_latitude());
-			if(iter.hasNext()) {
+			if (iter.hasNext()) {
 				origin.append("|");
 			}
 		}
 		des.append(longitude).append(",").append(latitude);
-		GAPI_DISTANCE_PARAMETERS pa = new GAPI_DISTANCE_PARAMETERS(origin.toString(), des.toString(),type);
+		GAPI_DISTANCE_PARAMETERS pa = new GAPI_DISTANCE_PARAMETERS(origin.toString(), des.toString(), type);
 		GAPI_DISTANCE dis = GapiUtil.getDistance(pa);
 		GAPI_DISTANCE_RESULT min = GapiUtil.getMinDistance(dis);
-		//logger.info(dis);
+		// logger.info(dis);
 		int minid = Integer.parseInt(min.getOrigin_id());
-		if(minid < 1 || minid > stationList.size()) {
+		if (minid < 1 || minid > stationList.size()) {
 			return null;
 		}
-		station = stationList.get(minid-1);
+		station = stationList.get(minid - 1);
 		return station;
 	}
 
-	
 	/**
 	 * 更新班车位置
 	 * @param line
@@ -154,6 +154,8 @@ public class BusService {
 		}
 		
 		List<Line> stationList = lineMapper.queryLineByLine(line);
+		Collections.sort(stationList);
+		//logger.info(stationList);
 		if(stationList == null || stationList.isEmpty()) {
 			res.setHead(new ResHeader("R0002","station list is empty!"));
 			return res;
