@@ -266,8 +266,7 @@ public class TestUserService {
     	    //UploadLocationRes res = JSONObject.parseObject(MyHttpRequest.sendGet(url, par,"utf-8"),UploadLocationRes.class);
     	    UploadLocationRes res = busService.UploadLocation("11",lons.get(i),lats.get(i));
     	    String t2 = new DateUtil().getTm();
-    	    //logger.info("["+ t1+"]-[" + t2 +"]");
-    	    //logger.info("["+String.valueOf((Integer.parseInt(t2.substring(4))-Integer.parseInt(t1.substring(4)))/100)+"ms]");
+    	    logger.info("bigin time["+ t1+"]-end time [" + t2 +"] time cost:["+String.valueOf((Integer.parseInt(t2.substring(4))-Integer.parseInt(t1.substring(4)))/100)+"ms]");
     	    if(res == null || res.getBody() == null) continue;
     	    logger.info("["+i+"]"+"["+res.getBody().getBus_laststa()+"]["+res.getBody().getBus_nextsta()+"]["+res.getBody().getBus_nextdis()+"]"+"["+String.valueOf((Integer.parseInt(t2.substring(4))-Integer.parseInt(t1.substring(4)))/100)+"ms]"+res.getHead().getERRMSG());
     	}

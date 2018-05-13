@@ -24,6 +24,7 @@ import com.linyk3.bean.QueryLineResBody;
 import com.linyk3.bean.ResHeader;
 import com.linyk3.bean.UploadLocationRes;
 import com.linyk3.service.BusService;
+import com.linyk3.util.DateUtil;
 import com.linyk3.util.GapiUtil;
 
 @Controller
@@ -38,6 +39,7 @@ public class BusController {
      */
     @RequestMapping(value = "/BusLine.do")
     public String queryLine(HttpServletRequest request) {
+    	 String t1 = new DateUtil().getTm();
     	String param = request.getParameter("param");
     	logger.info(param);
     	BusReq req = JSONObject.parseObject(param, BusReq.class);
@@ -70,6 +72,8 @@ public class BusController {
 		res.setHead(head);	
 		res.setBody(body);
 		request.getSession().setAttribute("data",JSON.toJSONString(res));
+		String t2 = new DateUtil().getTm();
+	    logger.info("queryLine:["+line+"]:"+"bigin time["+ t1+"]-end time [" + t2 +"] time cost:["+String.valueOf((Integer.parseInt(t2.substring(4))-Integer.parseInt(t1.substring(4)))/100)+"ms]");
         return "json";
     }
     
@@ -80,6 +84,7 @@ public class BusController {
      */
     @RequestMapping(value = "/QueryLocation.do")
     public String queryBus(HttpServletRequest request) {
+    	String t1 = new DateUtil().getTm();
     	String param = request.getParameter("param");
     	logger.info(param);
     	BusReq req = JSONObject.parseObject(param, BusReq.class);
@@ -144,6 +149,8 @@ public class BusController {
 		res.setBody(body);
 		logger.info(res);
 		request.getSession().setAttribute("data",JSON.toJSONString(res));
+		String t2 = new DateUtil().getTm();
+	    logger.info("queryBus:["+line+"]:"+"bigin time["+ t1+"]-end time [" + t2 +"] time cost:["+String.valueOf((Integer.parseInt(t2.substring(4))-Integer.parseInt(t1.substring(4)))/100)+"ms]");
         return "json";
     }
     /**
@@ -153,6 +160,7 @@ public class BusController {
      */
     @RequestMapping(value = "/QueryClosestStation.do")
     public String queryClosestStation(HttpServletRequest request) {
+    	String t1 = new DateUtil().getTm();
     	String param = request.getParameter("param");
     	logger.info(param);
     	BusReq req = JSONObject.parseObject(param, BusReq.class);
@@ -186,6 +194,8 @@ public class BusController {
 		res.setHead(head);
 		res.setBody(station);
 		request.getSession().setAttribute("data",JSON.toJSONString(res));
+		String t2 = new DateUtil().getTm();
+	    logger.info("queryClosestStation:bigin time["+ t1+"]-end time [" + t2 +"] time cost:["+String.valueOf((Integer.parseInt(t2.substring(4))-Integer.parseInt(t1.substring(4)))/100)+"ms]");
         return "json";
     }
     /**
@@ -196,6 +206,7 @@ public class BusController {
      */
     @RequestMapping(value = "/UploadLocation.do")
     public String UploadLocation(HttpServletRequest request) throws Exception {
+    	String t1 = new DateUtil().getTm();
     	String param = request.getParameter("param");
     	logger.info(param);
     	BusReq req = JSONObject.parseObject(param, BusReq.class);
@@ -226,6 +237,8 @@ public class BusController {
             return "json";
     	}
 		request.getSession().setAttribute("data",JSON.toJSONString(res));
+		String t2 = new DateUtil().getTm();
+	    logger.info("UploadLocation:bigin time["+ t1+"]-end time [" + t2 +"] time cost:["+String.valueOf((Integer.parseInt(t2.substring(4))-Integer.parseInt(t1.substring(4)))/100)+"ms]");
         return "json";
     }
 }

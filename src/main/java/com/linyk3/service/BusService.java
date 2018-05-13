@@ -1,8 +1,6 @@
 package com.linyk3.service;
 
-import java.text.ParseException;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -34,6 +32,7 @@ public class BusService {
 
 	public List<Line> queryLineByLine(String line) {
 		List<Line> stationList = lineMapper.queryLineByLine(line);
+		Collections.sort(stationList);
 		return stationList;
 	}
 
@@ -54,6 +53,7 @@ public class BusService {
 		if (stationList == null || stationList.isEmpty()) {
 			return null;
 		}
+		Collections.sort(stationList);
 		StringBuffer origin = new StringBuffer();
 		StringBuffer des = new StringBuffer();
 		Iterator<Line> iter = stationList.iterator();
@@ -84,6 +84,7 @@ public class BusService {
 		if (stationList == null || stationList.isEmpty()) {
 			return null;
 		}
+		Collections.sort(stationList);
 		StringBuffer origin = new StringBuffer();
 		StringBuffer des = new StringBuffer();
 		Iterator<Line> iter = stationList.iterator();
@@ -394,7 +395,7 @@ public class BusService {
 			tmpbus.setBus_chgdt(date.getDt());
 			tmpbus.setBus_chgtm(date.getTm());
 			busMapper.updateBus(tmpbus);
-			res.setHead(new ResHeader("R0012","error: Continue to refresh !"));
+			res.setHead(new ResHeader("R0012","lastStaion["+tmpbus.getBus_laststa()+"]nextStation["+tmpbus.getBus_nextsta()+"]"+"error:Continue to refresh !"));
 			res.setBody(tmpbus);
 			return res;
 		}
