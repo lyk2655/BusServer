@@ -13,7 +13,6 @@ CREATE TABLE `bus_user` (
 PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
 insert into `bus_user` values('1','宝安1线_上班','123456','13511111111','1','P','11111.1234','11111.5678','20180208','072500');
 insert into `bus_user` values('2','宝安1线_下班','123456','13522222222','2','P','22222.1234','22222.5678','20180208','072500');
 insert into `bus_user` values('3','宝安2线_上班','123456','13533333333','3','D','33333.1234','33333.5678','20180208','072500');
@@ -190,3 +189,32 @@ insert into `bus_bus` values('14','粤B11boc','14','后海线_下班', '13511111
 insert into `bus_bus` values('15','粤B11boc','15','前海线_上班', '13511111111','116.481028','39.989643','114.481028','39.989643','115.481028','39.989643','ling123','20180208','102400','1','072300','2','073000','1000m','20180208','072500');
 insert into `bus_bus` values('16','粤B11boc','16','前海线_下班', '13511111111','116.481028','39.989643','114.481028','39.989643','115.481028','39.989643','ling123','20180208','102400','1','072300','2','073000','1000m','20180208','072500');
 
+
+drop table bus_bush;
+CREATE TABLE `bus_bush` (
+    `id`              int(11) auto_increment,
+    `bus_id`          varchar(2) DEFAULT NULL,
+    `bus_num`        varchar(100) DEFAULT NULL,
+    `bus_line`      varchar(2) DEFAULT NULL,
+    `bus_driver`        varchar(100) DEFAULT NULL,
+    `bus_tell`        varchar(20) DEFAULT NULL,
+    `bus_longitude1`        varchar(20) DEFAULT NULL,
+    `bus_latitude1`   varchar(20) DEFAULT NULL,
+    `bus_longitude2`        varchar(20) DEFAULT NULL,
+    `bus_latitude2`   varchar(20) DEFAULT NULL,
+    `bus_longitude3`        varchar(20) DEFAULT NULL,
+    `bus_latitude3`   varchar(20) DEFAULT NULL,
+    `bus_uploadid`   varchar(12) DEFAULT NULL,
+    `bus_uploaddt`   varchar(8) DEFAULT NULL,
+    `bus_uploadtm`   varchar(12) DEFAULT NULL,
+    `bus_laststa`        varchar(200) DEFAULT NULL,
+    `bus_lasttm`      varchar(12) DEFAULT NULL,
+    `bus_nextsta`        varchar(200) DEFAULT NULL,
+    `bus_nexttm`        varchar(12) DEFAULT NULL,
+    `bus_nextdis`        varchar(200) DEFAULT NULL,
+    `bus_chgdt`       varchar(8) DEFAULT NULL,
+    `bus_chgtm`       varchar(12) DEFAULT NULL,
+    PRIMARY KEY (`id`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+select * from bus_bush;
+select bus_id,bus_longitude1,bus_latitude1,bus_longitude2,bus_latitude2,bus_longitude3,bus_latitude3,bus_uploadid,bus_uploaddt,bus_uploadtm,bus_laststa,bus_lasttm,bus_nextsta,bus_nexttm,bus_nextdis,bus_chgdt,bus_chgtm from bus_bush;

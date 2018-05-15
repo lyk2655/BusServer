@@ -400,5 +400,9 @@ public class BusService {
 			return res;
 		}
 	}
+	
+	public void insertBusH(Bus bus) {
+		busMapper.insertBusH(bus);
+	}
 
 }

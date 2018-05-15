@@ -1,8 +1,11 @@
 package com.linyk3.bean;
 
+import com.alibaba.fastjson.annotation.JSONField;
 
 public class ResHeader {
+	@JSONField(name = "RTNSTS") 
 	public String RTNSTS;
+	@JSONField(name = "ERRMSG") 
 	public String ERRMSG;
 
 	public ResHeader()
