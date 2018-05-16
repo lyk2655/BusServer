@@ -65,6 +65,8 @@ scp sourcefile  root@111.230.148.118:/root
 修改数据库：
 vi /root/apache-tomcat-8.5.28/webapps/BocbusServer/WEB-INF/classes/sqlMapConfig.xml
 vi /root/apache-tomcat-8.5.28/webapps/BocbusServer/WEB-INF/service.xml
+scp workspace/BusServer/target/classes/com/linyk3/service/BusService.class root@111.230.148.118:/root/apache-tomcat-8.5.28/webapps/BocbusServer/WEB-INF/classes/com/linyk3/service
+
 
 tail -f /root/apache-tomcat-8.5.28/logs/catalina.out
 ./root/apache-tomcat-8.5.28/bin/shutdown.sh
