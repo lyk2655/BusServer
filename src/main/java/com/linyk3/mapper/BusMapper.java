@@ -9,7 +9,7 @@ public interface BusMapper {
 
 	public Bus queryBus(String line);
 
-	public void updateBus(Bus bustmp);
+	public int updateBus(Bus bustmp);
 	
 	public void insertBusH(Bus bus);
 

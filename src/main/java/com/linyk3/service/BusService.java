@@ -129,7 +129,7 @@ public class BusService {
 		if(bus.getBus_longitude3().equals(longitude) && bus.getBus_latitude3().equals(latitude)) {
 			tmpbus.setBus_chgdt(date.getDt());
 			tmpbus.setBus_chgtm(date.getTm());
-			busMapper.updateBus(tmpbus);
+			//busMapper.updateBus(tmpbus);位置不变，不再更新数据库，担心影响并发处理顺序
 			res.setHead(new ResHeader("R0002","position do not change"));
 			return res;
 		}
@@ -148,8 +148,11 @@ public class BusService {
 			tmpbus.setBus_nextdis("0");
 			tmpbus.setBus_chgdt(date.getDt());
 			tmpbus.setBus_chgtm(date.getTm());
-			busMapper.updateBus(tmpbus);
-			res.setHead(new ResHeader("R0002","time out to refresh!"));
+			if(busMapper.updateBus(tmpbus) == 0) {
+				res.setHead(new ResHeader("R0002","update fail!"));
+			} else {
+				res.setHead(new ResHeader("R0002","time out to refresh!"));
+			}
 			res.setBody(tmpbus);
 			return res;
 		}

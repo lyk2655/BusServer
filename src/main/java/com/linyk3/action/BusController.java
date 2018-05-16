@@ -252,7 +252,7 @@ public class BusController {
 		String t2 = new DateUtil().getTm();
 		logger.info("UploadLocation:bigin time[" + t1 + "]-end time [" + t2 + "] time cost:["
 				+ String.valueOf((Integer.parseInt(t2.substring(4)) - Integer.parseInt(t1.substring(4))) / 100)
-				+ "ms]");
+				+ "ms]"+res.getHead().getERRMSG());
 		Bus bus = res.getBody();
 		if (bus != null) {
 			bus.setBus_num(res.getHead().getERRMSG());

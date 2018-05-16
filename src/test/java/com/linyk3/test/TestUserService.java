@@ -23,7 +23,7 @@ public class TestUserService {
 
 	Logger logger = Logger.getLogger(TestUserService.class);
     private String ip = "localhost:8080/BocbusServer/";
-    //private String ip = "111.230.148.118:8080/BocbusServer/";
+   // private String ip = "111.230.148.118:8080/BocbusServer/";
     
     @Autowired
     private BusService busService;
@@ -207,7 +207,10 @@ public class TestUserService {
     	lons.add("113.989434"); lats.add("22.592371");
     	lons.add("113.988415"); lats.add("22.591747");
     	lons.add("113.987326"); lats.add("22.590925");
+    	lons.add("113.987326"); lats.add("22.590925");
     	lons.add("113.981795"); lats.add("22.590350");
+    	lons.add("113.982224"); lats.add("22.587735");
+    	lons.add("113.982224"); lats.add("22.587735");
     	lons.add("113.982224"); lats.add("22.587735");
     	lons.add("113.980593"); lats.add("22.584764");
     	lons.add("113.972884"); lats.add("22.582742");
@@ -293,6 +296,9 @@ public class TestUserService {
     	lons.add("113.989434"); lats.add("22.592371");
     	lons.add("113.988415"); lats.add("22.591747");
     	lons.add("113.987326"); lats.add("22.590925");
+    	lons.add("113.981795"); lats.add("22.590350");
+    	lons.add("113.981795"); lats.add("22.590350");
+    	lons.add("113.981795"); lats.add("22.590350");
     	lons.add("113.981795"); lats.add("22.590350");
     	lons.add("113.982224"); lats.add("22.587735");
     	lons.add("113.980593"); lats.add("22.584764");

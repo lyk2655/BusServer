@@ -8,6 +8,8 @@
 	</select>
 
 	<update id="updateBus" parameterType="Bus">
+		
+		<![CDATA[
 		update bus_bus set
 		bus_num = #{bus_num},
 		bus_line = #{bus_line},
@@ -30,6 +32,8 @@
 		bus_chgdt = #{bus_chgdt},
 		bus_chgtm = #{bus_chgtm}
 		where bus_id=#{bus_id}
+		and ((bus_chgdt+0 < #{bus_chgdt}) or (bus_chgdt = #{bus_chgdt} and (bus_chgtm+0) < #{bus_chgtm}));
+		]]>
 	</update>
 
 	<insert id="insertBusH" parameterType="Bus">
