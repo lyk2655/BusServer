@@ -23,6 +23,8 @@ import com.linyk3.util.GapiUtil;
 @Service("busService")
 public class BusService {
 	Logger logger = Logger.getLogger(BusService.class);
+	
+	private int len = 100;
 
 	@Autowired
 	private LineMapper lineMapper;
@@ -184,7 +186,7 @@ public class BusService {
 			}
 			int disNew = Integer.parseInt(resultNew.getDistance());
 			// 到达最近站点
-			if (disNew <= 50) {
+			if (disNew <= len) {
 				tmpbus.setBus_latitude2(bus.getBus_latitude3());
 				tmpbus.setBus_longitude2(bus.getBus_longitude3());
 				tmpbus.setBus_latitude3(latitude);
@@ -335,7 +337,7 @@ public class BusService {
 			return null;
 		}
 		int disNext = Integer.parseInt(resultNext.getDistance());
-		if (disNext <= 50) {
+		if (disNext <= len) {
 			tmpbus.setBus_latitude1(bus.getBus_latitude2());
 			tmpbus.setBus_longitude1(bus.getBus_longitude2());
 			tmpbus.setBus_latitude2(bus.getBus_latitude3());
@@ -441,8 +443,8 @@ public class BusService {
 			// 距离变大，且非到站情况： 矫正重算
 			tmpbus.setBus_latitude2("0");
 			tmpbus.setBus_longitude2("0");
-			tmpbus.setBus_latitude3(longitude);
-			tmpbus.setBus_longitude3(latitude);
+			tmpbus.setBus_latitude3(latitude);
+			tmpbus.setBus_longitude3(longitude);
 			tmpbus.setBus_chgdt(date.getDt());
 			tmpbus.setBus_chgtm(date.getTm());
 			if (busMapper.updateBus(tmpbus) == 0) {
