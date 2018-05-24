@@ -23,7 +23,7 @@ import com.linyk3.util.GapiUtil;
 @Service("busService")
 public class BusService {
 	Logger logger = Logger.getLogger(BusService.class);
-	
+
 	private int len = 100;
 
 	@Autowired
@@ -144,9 +144,9 @@ public class BusService {
 			tmpbus.setBus_longitude2("0");
 			tmpbus.setBus_latitude3(latitude);
 			tmpbus.setBus_longitude3(longitude);
-			tmpbus.setBus_laststa("1");
-			tmpbus.setBus_lasttm("0");
-			tmpbus.setBus_nextsta("2");
+			// tmpbus.setBus_laststa("1");
+			// tmpbus.setBus_lasttm("0");
+			// tmpbus.setBus_nextsta("2");
 			tmpbus.setBus_nexttm("0");
 			tmpbus.setBus_nextdis("0");
 			tmpbus.setBus_chgdt(date.getDt());
@@ -185,6 +185,45 @@ public class BusService {
 				return null;
 			}
 			int disNew = Integer.parseInt(resultNew.getDistance());
+
+			// 获取pos3最近站点
+			Line staMin3 = queryCloestStation(stationList, bus.getBus_longitude3(), bus.getBus_latitude3(), "0");
+			if (staMin3 == null) {
+				return null;
+			}
+			int stanumNew = Integer.parseInt(staMinNew.getLine_stanum());
+			int stanum3 = Integer.parseInt(staMin3.getLine_stanum());
+			// 获取dis3
+			ori = new StringBuffer();
+			des = new StringBuffer();
+			ori.append(bus.getBus_longitude3()).append(",").append(bus.getBus_latitude3());
+			des.append(staMin3.getLine_longitude()).append(",").append(staMin3.getLine_latitude());
+			GAPI_DISTANCE_RESULT result3 = GapiUtil.getStationDistance(ori.toString(), des.toString(), "1");
+			if (result3 == null) {
+				return null;
+			}
+			int dis3 = Integer.parseInt(result3.getDistance());
+			
+			if (Math.abs(disNew - dis3) > len) {
+				// 距离变化过大，舍去
+				tmpbus.setBus_latitude2("0");
+				tmpbus.setBus_longitude2("0");
+				tmpbus.setBus_latitude3(latitude);
+				tmpbus.setBus_longitude3(longitude);
+				tmpbus.setBus_chgdt(date.getDt());
+				tmpbus.setBus_chgtm(date.getTm());
+				if (busMapper.updateBus(tmpbus) == 0) {
+					res.setHead(new ResHeader("R0004", "update fail!"));
+					logger.info(bus);
+					logger.info(tmpbus);
+				} else {
+					res.setHead(new ResHeader("R0004", "refresh: distance change too mush[" + disNew + " - " + dis3
+							+ "= " + Math.abs(disNew - dis3) + "]!"));
+				}
+				res.setBody(tmpbus);
+				return res;
+			}
+			
 			// 到达最近站点
 			if (disNew <= len) {
 				tmpbus.setBus_latitude2(bus.getBus_latitude3());
@@ -207,25 +246,8 @@ public class BusService {
 				res.setBody(tmpbus);
 				return res;
 			}
-			// 获取pos3最近站点
-			Line staMin3 = queryCloestStation(stationList, bus.getBus_longitude3(), bus.getBus_latitude3(), "0");
-			if (staMin3 == null) {
-				return null;
-			}
-			int stanumNew = Integer.parseInt(staMinNew.getLine_stanum());
-			int stanum3 = Integer.parseInt(staMin3.getLine_stanum());
+			// posnew和pos3最近站点相同
 			if (stanumNew == stanum3) {
-				// posnew和pos3最近站点相同
-				// 获取dis3
-				ori = new StringBuffer();
-				des = new StringBuffer();
-				ori.append(bus.getBus_longitude3()).append(",").append(bus.getBus_latitude3());
-				des.append(staMin3.getLine_longitude()).append(",").append(staMin3.getLine_latitude());
-				GAPI_DISTANCE_RESULT result3 = GapiUtil.getStationDistance(ori.toString(), des.toString(), "1");
-				if (result3 == null) {
-					return null;
-				}
-				int dis3 = Integer.parseInt(result3.getDistance());
 				// disNew < dis3 距离缩小： 下一站：stanumNew=stanum3
 				if (disNew < dis3) {
 					tmpbus.setBus_latitude2(bus.getBus_latitude3());
@@ -337,6 +359,30 @@ public class BusService {
 			return null;
 		}
 		int disNext = Integer.parseInt(resultNext.getDistance());
+		int dis3 = Integer.parseInt(bus.getBus_nextdis());
+		
+		if (Math.abs(disNext - dis3) > len) {
+			// 距离变化过大，舍去
+			tmpbus.setBus_latitude2("0");
+			tmpbus.setBus_longitude2("0");
+			//正常情况的，新坐标应该是错误的，舍去
+			//tmpbus.setBus_latitude3(latitude);
+			//tmpbus.setBus_longitude3(longitude);
+			tmpbus.setBus_chgdt(date.getDt());
+			tmpbus.setBus_chgtm(date.getTm());
+			if (busMapper.updateBus(tmpbus) == 0) {
+				res.setHead(new ResHeader("R0004", "update fail!"));
+				logger.info(bus);
+				logger.info(tmpbus);
+			} else {
+				res.setHead(new ResHeader("R0004", "normal: distance change too mush[" + disNext + " - " + dis3
+						+ "= " + Math.abs(disNext - dis3) + "]!"));
+			}
+			res.setBody(tmpbus);
+			return res;
+		}
+		
+		
 		if (disNext <= len) {
 			tmpbus.setBus_latitude1(bus.getBus_latitude2());
 			tmpbus.setBus_longitude1(bus.getBus_longitude2());
@@ -360,7 +406,7 @@ public class BusService {
 			res.setBody(tmpbus);
 			return res;
 		}
-		int dis3 = Integer.parseInt(bus.getBus_nextdis());
+		
 		// 距离变小： 更新距离&时间
 		if (disNext <= dis3) {
 			tmpbus.setBus_latitude1(bus.getBus_latitude2());
@@ -382,8 +428,27 @@ public class BusService {
 			}
 			res.setBody(tmpbus);
 			return res;
+		}  else {
+			// 距离变大，且非到站情况： 矫正重算
+			tmpbus.setBus_latitude2("0");
+			tmpbus.setBus_longitude2("0");
+			tmpbus.setBus_latitude3(latitude);
+			tmpbus.setBus_longitude3(longitude);
+			tmpbus.setBus_chgdt(date.getDt());
+			tmpbus.setBus_chgtm(date.getTm());
+			if (busMapper.updateBus(tmpbus) == 0) {
+				res.setHead(new ResHeader("R0012", "update fail!"));
+				logger.info(bus);
+				logger.info(tmpbus);
+			} else {
+				res.setHead(new ResHeader("R0012", "lastStaion[" + tmpbus.getBus_laststa() + "]nextStation["
+						+ tmpbus.getBus_nextsta() + "]" + "error:Continue to refresh !"));
+			}
+			res.setBody(tmpbus);
+			return res;
 		}
-		// 距离变大
+		
+		/*// 距离变大
 		int stanumLast = Integer.parseInt(bus.getBus_laststa());
 		if (stanumNext == stanumLast) {
 			// stanumNext == stanumLast && disNext > 50 => dis3 <= 50 过站 下下站
@@ -457,7 +522,7 @@ public class BusService {
 			}
 			res.setBody(tmpbus);
 			return res;
-		}
+		}*/
 	}
 
 	public void insertBusH(Bus bus) {

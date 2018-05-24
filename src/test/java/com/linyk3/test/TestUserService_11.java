@@ -748,7 +748,7 @@ public class TestUserService_11 {
     	    String par= "param={'head':{'TRACDE':'BC00002','TRADAT':'11111','TRATIM':'11111','USRNAM':'1'},'body':{'line':'11','longitude':"
     				+lons.get(i).trim()+",'latitude':"+lats.get(i).trim()+ "}}";
     	    String t1 = new DateUtil().getTm();
-    	    UploadLocationRes res = JSONObject.parseObject(MyHttpRequest.sendGet(url, par,"utf-8"),UploadLocationRes.class);
+    	    UploadLocationRes res = JSONObject.parseObject(MyHttpRequest.sendGet(url, par,"utf-8",false),UploadLocationRes.class);
     	    String t2 = new DateUtil().getTm();
     	    if(res == null || res.getBody() == null) continue;
     	    logger.info("["+i+"]"+"["+res.getBody().getBus_laststa()+"]["+res.getBody().getBus_nextsta()+"]["+res.getBody().getBus_nextdis()+"]"+"["+String.valueOf((Integer.parseInt(t2.substring(4))-Integer.parseInt(t1.substring(4)))/100)+"ms]"+res.getHead().getERRMSG());
@@ -1211,7 +1211,7 @@ public class TestUserService_11 {
     	    String par= "param={'head':{'TRACDE':'BC00002','TRADAT':'11111','TRATIM':'11111','USRNAM':'1'},'body':{'line':'11','longitude':"
     				+lons.get(i).trim()+",'latitude':"+lats.get(i).trim()+ "}}";
     	    String t1 = new DateUtil().getTm();
-    	    UploadLocationRes res = JSONObject.parseObject(MyHttpRequest.sendGet(url, par,"utf-8"),UploadLocationRes.class);
+    	    UploadLocationRes res = JSONObject.parseObject(MyHttpRequest.sendGet(url, par,"utf-8",false),UploadLocationRes.class);
     	    String t2 = new DateUtil().getTm();
     	    if(res == null || res.getBody() == null) continue;
     	    logger.info("["+i+"]"+"["+res.getBody().getBus_laststa()+"]["+res.getBody().getBus_nextsta()+"]["+res.getBody().getBus_nextdis()+"]"+"["+String.valueOf((Integer.parseInt(t2.substring(4))-Integer.parseInt(t1.substring(4)))/100)+"ms]"+res.getHead().getERRMSG());

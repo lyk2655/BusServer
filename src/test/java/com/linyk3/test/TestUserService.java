@@ -41,7 +41,7 @@ public class TestUserService {
 	    String par= "param={'heaBusServiced':{'TRACDE':'BC00002','TRADAT':'11111','TRATIM':'11111','USRNAM':'1'},'body':{'line':'4','stanum':'3'}}";
 	    System.out.println(url+"?"+par);
 	    String t1 = new DateUtil().getTm();
-	    String res = MyHttpRequest.sendGet(url, par,"utf-8");
+	    String res = MyHttpRequest.sendGet(url, par,"utf-8",false);
 	    String t2 = new DateUtil().getTm();
 	    logger.info(res.toString());
 	    logger.info("["+ t1+"]-[" + t2 +"]");
@@ -51,14 +51,14 @@ public class TestUserService {
     public void BusLine(){
     	String url = "http://"+ip+"BusLine.do";
 	    String par= "param={'head':{'TRACDE':'BC00002','TRADAT':'11111','TRATIM':'11111','USRNAM':'1'},'body':{'line':'4'}}";
-	    System.out.println("BusLine"+MyHttpRequest.sendGet(url, par,"utf-8"));
+	    System.out.println("BusLine"+MyHttpRequest.sendGet(url, par,"utf-8",false));
     }
     
     @Test
     public void QueryClosestStation(){
     	String url = "http://"+ip+"QueryClosestStation.do";
 	    String par= "param={'head':{'TRACDE':'BC00002','TRADAT':'11111','TRATIM':'11111','USRNAM':'1'},'body':{'line':'4','longitude':'114.121028','latitude':'36.284643'}}";
-	    System.out.println("BusLine"+MyHttpRequest.sendGet(url, par,"utf-8"));
+	    System.out.println("BusLine"+MyHttpRequest.sendGet(url, par,"utf-8",false));
     }
     
     @Test
@@ -114,7 +114,7 @@ public class TestUserService {
     				+lons.get(i)+",'latitude':"+lats.get(i)+ "}}";
     	    //System.out.println(url+"?"+par);
     	    String t1 = new DateUtil().getTm();
-    	    UploadLocationRes res = JSONObject.parseObject(MyHttpRequest.sendGet(url, par,"utf-8"),UploadLocationRes.class);
+    	    UploadLocationRes res = JSONObject.parseObject(MyHttpRequest.sendGet(url, par,"utf-8",false),UploadLocationRes.class);
     	    String t2 = new DateUtil().getTm();
     	    //logger.info("["+ t1+"]-[" + t2 +"]");
     	    //logger.info("["+String.valueOf((Integer.parseInt(t2.substring(4))-Integer.parseInt(t1.substring(4)))/100)+"ms]");
@@ -366,7 +366,7 @@ public class TestUserService {
     	    String par= "param={'head':{'TRACDE':'BC00002','TRADAT':'11111','TRATIM':'11111','USRNAM':'1'},'body':{'line':'11','longitude':"
     				+lons.get(i)+",'latitude':"+lats.get(i)+ "}}";
     	    String t1 = new DateUtil().getTm();
-    	    UploadLocationRes res = JSONObject.parseObject(MyHttpRequest.sendGet(url, par,"utf-8"),UploadLocationRes.class);
+    	    UploadLocationRes res = JSONObject.parseObject(MyHttpRequest.sendGet(url, par,"utf-8",false),UploadLocationRes.class);
     	    String t2 = new DateUtil().getTm();
     	    if(res == null || res.getBody() == null) continue;
     	    logger.info("["+i+"]"+"["+res.getBody().getBus_laststa()+"]["+res.getBody().getBus_nextsta()+"]["+res.getBody().getBus_nextdis()+"]"+"["+String.valueOf((Integer.parseInt(t2.substring(4))-Integer.parseInt(t1.substring(4)))/100)+"ms]"+res.getHead().getERRMSG());

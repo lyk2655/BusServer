@@ -23,9 +23,10 @@ public class MyHttpRequest {
      *            请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
      * @param charset         
      *             发送和接收的格式
+     * @param resend 
      * @return URL 所代表远程资源的响应结果
      */
-    public static String sendGet(String url, String param,String charset) {
+    public static String sendGet(String url, String param,String charset, boolean resend) {
         String result = "";
         String line;
         StringBuffer sb=new StringBuffer();
@@ -54,11 +55,13 @@ public class MyHttpRequest {
             result=sb.toString();
         } catch (Exception e) {
             System.out.println("发送GET请求出现异常！" + e);
-            if(e.getMessage().equals("connect timed out")) {
-            	return sendGet( url,  param, charset);
-            }
-            if(e.getMessage().equals("Read timed out")) {
-            	return sendGet( url,  param, charset);
+            if(resend) {
+            	 if(e.getMessage().equals("connect timed out")) {
+                 	return sendGet( url,  param, charset,resend);
+                 }
+                 if(e.getMessage().equals("Read timed out")) {
+                 	return sendGet( url,  param, charset,resend);
+                 }
             }
             e.printStackTrace();
         }
@@ -145,7 +148,7 @@ public class MyHttpRequest {
         String param="key=8ad12a9140feb5b3ebdcd83abf021d45&origins=116.481028,39.989643|114.481028,39.989643|115.481028,39.989643&destination=114.465302,40.004717&type=1";
        //String param="key=8ad12a9140feb5b3ebdcd83abf021d45&origins=116.481028,39.989643|114.481028,39.989643|115.481028,39.989643&destination=114.465302,40.004717&type=1";
         
-       System.out.println("Get请求:"+MyHttpRequest.sendGet(ip, param,"utf-8"));
+       System.out.println("Get请求:"+MyHttpRequest.sendGet(ip, param,"utf-8",false));
         /*String ip = "111.230.148.118";
     	String port = "8080";
         String getUrl="/BocbusServer/Mode.do";

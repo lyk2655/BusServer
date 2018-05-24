@@ -23,7 +23,7 @@ public class GapiUtil {
 				+ "&type=" + pa.getType();
 		// String ip = "http://restapi.amap.com/v3/distance";
 		// String param="key=8ad12a9140feb5b3ebdcd83abf021d45&origins=116.481028,39.989643|114.481028,39.989643|115.481028,39.989643&destination=114.465302,40.004717&type=1";
-		String dis = MyHttpRequest.sendGet(ip, param, "utf-8");
+		String dis = MyHttpRequest.sendGet(ip, param, "utf-8",true);
 		//Glogger.info(dis);
 		GAPI_DISTANCE distance = JSONObject.parseObject(dis, GAPI_DISTANCE.class);
 		//Glogger.info(distance);
