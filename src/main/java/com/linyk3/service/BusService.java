@@ -25,10 +25,12 @@ public class BusService {
 	Logger logger = Logger.getLogger(BusService.class);
 
 	private int len = 100;
+	
+	public static int[] refresh = new int[20];
 
 	@Autowired
 	private LineMapper lineMapper;
-
+	
 	@Autowired
 	private BusMapper busMapper;
 
@@ -136,8 +138,10 @@ public class BusService {
 			res.setHead(new ResHeader("R0002", "position do not change"));
 			return res;
 		}
-		if (date.isTimeOut(bus.getBus_chgdt(), bus.getBus_chgtm()) || bus.getBus_latitude3().equals("0")
+		int l = Integer.parseInt(line);
+		if (refresh[l] > 5 || date.isTimeOut(bus.getBus_chgdt(), bus.getBus_chgtm()) || bus.getBus_latitude3().equals("0")
 				|| bus.getBus_longitude3().equals("0") || latitude.equals("0") || longitude.equals("0")) {
+			refresh[l]  = 0;
 			tmpbus.setBus_latitude1("0");
 			tmpbus.setBus_longitude1("0");
 			tmpbus.setBus_latitude2("0");
@@ -152,11 +156,11 @@ public class BusService {
 			tmpbus.setBus_chgdt(date.getDt());
 			tmpbus.setBus_chgtm(date.getTm());
 			if (busMapper.updateBus(tmpbus) == 0) {
-				res.setHead(new ResHeader("R0002", "update fail!"));
+				res.setHead(new ResHeader("R0003", "update fail!"));
 				logger.info(bus);
 				logger.info(tmpbus);
 			} else {
-				res.setHead(new ResHeader("R0002", "time out to refresh!"));
+				res.setHead(new ResHeader("R0003", "time out to refresh!"));
 			}
 			res.setBody(tmpbus);
 			return res;
@@ -166,7 +170,7 @@ public class BusService {
 		Collections.sort(stationList);
 		// logger.info(stationList);
 		if (stationList == null || stationList.isEmpty()) {
-			res.setHead(new ResHeader("R0002", "station list is empty!"));
+			res.setHead(new ResHeader("R0004", "station list is empty!"));
 			return res;
 		}
 		if ((bus.getBus_longitude1().equals("0") || bus.getBus_latitude1().equals("0"))
@@ -207,16 +211,19 @@ public class BusService {
 
 			if (Math.abs(disNew - dis3) > len) {
 				// 距离变化过大，舍去
+				refresh[l]++;
+				tmpbus.setBus_latitude2("0");
+				tmpbus.setBus_longitude2("0");
 				tmpbus.setBus_latitude3(latitude);
 				tmpbus.setBus_longitude3(longitude);
 				tmpbus.setBus_chgdt(date.getDt());
 				tmpbus.setBus_chgtm(date.getTm());
 				if (busMapper.updateBus(tmpbus) == 0) {
-					res.setHead(new ResHeader("R0004", "update fail!"));
+					res.setHead(new ResHeader("R0005", "update fail!"));
 					logger.info(bus);
 					logger.info(tmpbus);
 				} else {
-					res.setHead(new ResHeader("R0004", "refresh: distance change too mush[" + disNew + " - " + dis3
+					res.setHead(new ResHeader("R0005", "refresh: distance change too mush[" + disNew + " - " + dis3
 							+ "= " + Math.abs(disNew - dis3) + "]!"));
 				}
 				res.setBody(tmpbus);
@@ -236,11 +243,11 @@ public class BusService {
 				tmpbus.setBus_chgdt(date.getDt());
 				tmpbus.setBus_chgtm(date.getTm());
 				if (busMapper.updateBus(tmpbus) == 0) {
-					res.setHead(new ResHeader("R0003", "update fail!"));
+					res.setHead(new ResHeader("R0006", "update fail!"));
 					logger.info(bus);
 					logger.info(tmpbus);
 				} else {
-					res.setHead(new ResHeader("R0003", "refresh: the bus is arriving!"));
+					res.setHead(new ResHeader("R0006", "refresh: the bus is arriving!"));
 				}
 				res.setBody(tmpbus);
 				return res;
@@ -264,11 +271,11 @@ public class BusService {
 					tmpbus.setBus_chgdt(date.getDt());
 					tmpbus.setBus_chgtm(date.getTm());
 					if (busMapper.updateBus(tmpbus) == 0) {
-						res.setHead(new ResHeader("R0004", "update fail!"));
+						res.setHead(new ResHeader("R0007", "update fail!"));
 						logger.info(bus);
 						logger.info(tmpbus);
 					} else {
-						res.setHead(new ResHeader("R0004", "refresh: both staMin3 and staMinNew is the next station!"));
+						res.setHead(new ResHeader("R0007", "refresh: both staMin3 and staMinNew is the next station!"));
 					}
 					res.setBody(tmpbus);
 					return res;
@@ -290,11 +297,11 @@ public class BusService {
 					tmpbus.setBus_chgdt(date.getDt());
 					tmpbus.setBus_chgtm(date.getTm());
 					if (busMapper.updateBus(tmpbus) == 0) {
-						res.setHead(new ResHeader("R0005", "update fail!"));
+						res.setHead(new ResHeader("R0008", "update fail!"));
 						logger.info(bus);
 						logger.info(tmpbus);
 					} else {
-						res.setHead(new ResHeader("R0005", "refresh:both staMin3 and staMinNew is the last station!"));
+						res.setHead(new ResHeader("R0008", "refresh:both staMin3 and staMinNew is the last station!"));
 					}
 					res.setBody(tmpbus);
 					return res;
@@ -312,19 +319,22 @@ public class BusService {
 				tmpbus.setBus_chgdt(date.getDt());
 				tmpbus.setBus_chgtm(date.getTm());
 				if (busMapper.updateBus(tmpbus) == 0) {
-					res.setHead(new ResHeader("R0006", "update fail!"));
+					res.setHead(new ResHeader("R0009", "update fail!"));
 					logger.info(bus);
 					logger.info(tmpbus);
 				} else {
-					res.setHead(new ResHeader("R0006",
+					res.setHead(new ResHeader("R0009",
 							"refresh: staMin3 is the last station, and the staMinNew is the next station!"));
 				}
 				res.setBody(tmpbus);
 				return res;
 			} else {
 				// 重新计算
-				tmpbus.setBus_latitude1("0");
-				tmpbus.setBus_longitude1("0");
+				//tmpbus.setBus_latitude1("0");
+				//tmpbus.setBus_longitude1("0");
+				//tmpbus.setBus_latitude2("0");
+				//tmpbus.setBus_longitude2("0");
+				refresh[l]++;
 				tmpbus.setBus_latitude2("0");
 				tmpbus.setBus_longitude2("0");
 				tmpbus.setBus_latitude3(latitude);
@@ -332,11 +342,11 @@ public class BusService {
 				tmpbus.setBus_chgdt(date.getDt());
 				tmpbus.setBus_chgtm(date.getTm());
 				if (busMapper.updateBus(tmpbus) == 0) {
-					res.setHead(new ResHeader("R0007", "update fail!"));
+					res.setHead(new ResHeader("R0010", "update fail!"));
 					logger.info(bus);
 					logger.info(tmpbus);
 				} else {
-					res.setHead(new ResHeader("R0007", "refresh: Continue to refresh !"));
+					res.setHead(new ResHeader("R0010", "refresh: Continue to refresh !"));
 				}
 				res.setBody(tmpbus);
 				return res;
@@ -380,18 +390,20 @@ public class BusService {
 
 			if (Math.abs(disNew - dis3) > len) {
 				// 距离变化过大，舍去
+				refresh[l]++;
 				tmpbus.setBus_latitude2("0");
 				tmpbus.setBus_longitude2("0");
+				//最新的位置是错误的
 				tmpbus.setBus_latitude3(latitude);
 				tmpbus.setBus_longitude3(longitude);
 				tmpbus.setBus_chgdt(date.getDt());
 				tmpbus.setBus_chgtm(date.getTm());
 				if (busMapper.updateBus(tmpbus) == 0) {
-					res.setHead(new ResHeader("R0004", "update fail!"));
+					res.setHead(new ResHeader("R0011", "update fail!"));
 					logger.info(bus);
 					logger.info(tmpbus);
 				} else {
-					res.setHead(new ResHeader("R0004", "refresh: distance change too mush[" + disNew + " - " + dis3
+					res.setHead(new ResHeader("R0011", "refresh: distance change too mush[" + disNew + " - " + dis3
 							+ "= " + Math.abs(disNew - dis3) + "]!"));
 				}
 				res.setBody(tmpbus);
@@ -411,11 +423,11 @@ public class BusService {
 				tmpbus.setBus_chgdt(date.getDt());
 				tmpbus.setBus_chgtm(date.getTm());
 				if (busMapper.updateBus(tmpbus) == 0) {
-					res.setHead(new ResHeader("R0003", "update fail!"));
+					res.setHead(new ResHeader("R0012", "update fail!"));
 					logger.info(bus);
 					logger.info(tmpbus);
 				} else {
-					res.setHead(new ResHeader("R0003", "refresh: the bus is arriving!"));
+					res.setHead(new ResHeader("R0012", "refresh: the bus is arriving!"));
 				}
 				res.setBody(tmpbus);
 				return res;
@@ -426,13 +438,13 @@ public class BusService {
 			/*if (busNextStaNum == busLastStaNum) {
 				// 重新初始化
 			} else if (busNextStaNum == busLastStaNum + 1) {
-				if (stanumNew == stanum3) {
+				if (stanumNew == stanu//m3) {
 					if (stanumNew == busLastStaNum) {
 						if (disNew > dis3) {
 							// 距离变大，从busLastStaNum出发继续往下，只需更新距离，时间
 						} else {
 							// 重新初始化
-						}
+						}//
 					} else if (stanumNew == busNextStaNum) {
 						if (disNew < dis3) {
 							// 距离变大，继续往下靠近busNextStaNum，只需更新距离，时间
@@ -478,29 +490,32 @@ public class BusService {
 				tmpbus.setBus_chgdt(date.getDt());
 				tmpbus.setBus_chgtm(date.getTm());
 				if (busMapper.updateBus(tmpbus) == 0) {
-					res.setHead(new ResHeader("R0009", "update fail!"));
+					res.setHead(new ResHeader("R0013", "update fail!"));
 					logger.info(bus);
 					logger.info(tmpbus);
 				} else {
-					res.setHead(new ResHeader("R0009", "normal: bus is arriving to stanumNext, update distance and time!"));
+					res.setHead(new ResHeader("R0013", "normal: bus is arriving to stanumNext, update distance and time!"));
 				}
 				res.setBody(tmpbus);
 				return res;
 
 			} else {
 				// 初始化
+				refresh[l]++;
+				//tmpbus.setBus_latitude1("0");
+				//tmpbus.setBus_longitude1("0");
 				tmpbus.setBus_latitude2("0");
 				tmpbus.setBus_longitude2("0");
-				tmpbus.setBus_latitude3(latitude);
-				tmpbus.setBus_longitude3(longitude);
+				//tmpbus.setBus_latitude3(latitude);
+				//tmpbus.setBus_longitude3(longitude);
 				tmpbus.setBus_chgdt(date.getDt());
 				tmpbus.setBus_chgtm(date.getTm());
 				if (busMapper.updateBus(tmpbus) == 0) {
-					res.setHead(new ResHeader("R0004", "update fail!"));
+					res.setHead(new ResHeader("R0014", "update fail!"));
 					logger.info(bus);
 					logger.info(tmpbus);
 				} else {
-					res.setHead(new ResHeader("R0004", "refresh: distance change too mush[" + disNew + " - " + dis3
+					res.setHead(new ResHeader("R0014", "refresh: distance change too mush[" + disNew + " - " + dis3
 							+ "= " + Math.abs(disNew - dis3) + "]!"));
 				}
 				res.setBody(tmpbus);
@@ -529,6 +544,7 @@ public class BusService {
 
 		if (Math.abs(disNext - dis3) > len) {
 			// 距离变化过大，舍去
+			//refresh[l]++;
 			tmpbus.setBus_latitude2("0");
 			tmpbus.setBus_longitude2("0");
 			// 正常情况的，新坐标应该是错误的，舍去
@@ -537,11 +553,11 @@ public class BusService {
 			tmpbus.setBus_chgdt(date.getDt());
 			tmpbus.setBus_chgtm(date.getTm());
 			if (busMapper.updateBus(tmpbus) == 0) {
-				res.setHead(new ResHeader("R0004", "update fail!"));
+				res.setHead(new ResHeader("R0015", "update fail!"));
 				logger.info(bus);
 				logger.info(tmpbus);
 			} else {
-				res.setHead(new ResHeader("R0004", "normal: distance change too mush[" + disNext + " - " + dis3 + "= "
+				res.setHead(new ResHeader("R0015", "normal: distance change too mush[" + disNext + " - " + dis3 + "= "
 						+ Math.abs(disNext - dis3) + "]!"));
 			}
 			res.setBody(tmpbus);
@@ -562,11 +578,11 @@ public class BusService {
 			tmpbus.setBus_chgdt(date.getDt());
 			tmpbus.setBus_chgtm(date.getTm());
 			if (busMapper.updateBus(tmpbus) == 0) {
-				res.setHead(new ResHeader("R0008", "update fail!"));
+				res.setHead(new ResHeader("R0016", "update fail!"));
 				logger.info(bus);
 				logger.info(tmpbus);
 			} else {
-				res.setHead(new ResHeader("R0008", "normal: bus is arriving at stanumNext!"));
+				res.setHead(new ResHeader("R0016", "normal: bus is arriving at stanumNext!"));
 			}
 			res.setBody(tmpbus);
 			return res;
@@ -585,11 +601,11 @@ public class BusService {
 			tmpbus.setBus_chgdt(date.getDt());
 			tmpbus.setBus_chgtm(date.getTm());
 			if (busMapper.updateBus(tmpbus) == 0) {
-				res.setHead(new ResHeader("R0009", "update fail!"));
+				res.setHead(new ResHeader("R0017", "update fail!"));
 				logger.info(bus);
 				logger.info(tmpbus);
 			} else {
-				res.setHead(new ResHeader("R0009", "normal: bus is arriving to stanumNext, update distance and time!"));
+				res.setHead(new ResHeader("R0017", "normal: bus is arriving to stanumNext, update distance and time!"));
 			}
 			res.setBody(tmpbus);
 			return res;
@@ -597,16 +613,16 @@ public class BusService {
 			// 距离变大，且非到站情况： 矫正重算
 			tmpbus.setBus_latitude2("0");
 			tmpbus.setBus_longitude2("0");
-			tmpbus.setBus_latitude3(latitude);
-			tmpbus.setBus_longitude3(longitude);
+			//tmpbus.setBus_latitude3(latitude);
+			//tmpbus.setBus_longitude3(longitude);
 			tmpbus.setBus_chgdt(date.getDt());
 			tmpbus.setBus_chgtm(date.getTm());
 			if (busMapper.updateBus(tmpbus) == 0) {
-				res.setHead(new ResHeader("R0012", "update fail!"));
+				res.setHead(new ResHeader("R0018", "update fail!"));
 				logger.info(bus);
 				logger.info(tmpbus);
 			} else {
-				res.setHead(new ResHeader("R0012", "lastStaion[" + tmpbus.getBus_laststa() + "]nextStation["
+				res.setHead(new ResHeader("R0018", "lastStaion[" + tmpbus.getBus_laststa() + "]nextStation["
 						+ tmpbus.getBus_nextsta() + "]" + "error:Continue to refresh !"));
 			}
 			res.setBody(tmpbus);

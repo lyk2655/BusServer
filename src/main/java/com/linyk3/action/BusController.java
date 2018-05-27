@@ -255,7 +255,7 @@ public class BusController {
 				+ "ms]"+res.getHead().getERRMSG());
 		Bus bus = res.getBody();
 		if (bus != null) {
-			bus.setBus_num(res.getHead().getERRMSG());
+			bus.setBus_num("["+res.getHead().getRTNSTS().trim()+"]"+res.getHead().getERRMSG().trim());
 			busService.insertBusH(bus);
 		}
 		return "json";
