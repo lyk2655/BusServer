@@ -22,8 +22,8 @@ import com.linyk3.util.MyHttpRequest;
 public class TestUserService_1_20180524 {
 
 	Logger logger = Logger.getLogger(TestUserService_1_20180524.class);
-   private String ip = "localhost:8080/BocbusServer/";
-  // private String ip = "111.230.148.118:8080/BocbusServer/";
+   //private String ip = "localhost:8080/BocbusServer/";
+  private String ip = "111.230.148.118:8080/BocbusServer/";
     
     @Autowired
     private BusService busService;

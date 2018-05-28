@@ -66,6 +66,7 @@ scp sourcefile  root@111.230.148.118:/root
 vi /root/apache-tomcat-8.5.28/webapps/BocbusServer/WEB-INF/classes/sqlMapConfig.xml
 vi /root/apache-tomcat-8.5.28/webapps/BocbusServer/WEB-INF/service.xml
 scp workspace/BusServer/target/classes/com/linyk3/service/BusService.class root@111.230.148.118:/root/apache-tomcat-8.5.28/webapps/BocbusServer/WEB-INF/classes/com/linyk3/service
+scp workspace/BusServer/target/classes/com/linyk3/action/BusController.class root@111.230.148.118:/root/apache-tomcat-8.5.28/webapps/BocbusServer/WEB-INF/classes/com/linyk3/action
 
 
 tail -f /root/apache-tomcat-8.5.28/logs/catalina.out
